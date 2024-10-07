@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import StarknetProvider from "./starknet-provider";
+import ConnectButton from "@/components/ConnectButton";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -28,7 +30,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <StarknetProvider>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', padding: 12, position: 'absolute', zIndex: 1, right: 0 }}>
+                <ConnectButton />
+            </div>
+          {children}
+        </StarknetProvider>
       </body>
     </html>
   );
