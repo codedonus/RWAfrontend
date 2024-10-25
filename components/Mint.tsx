@@ -1,11 +1,12 @@
 "use client";
 
+import { RcFile } from "antd/es/upload";
 import Button from "./Button";
 import { message, Upload } from "antd";
 
 const Mint: React.FC = () => {
 
-  const handleUpload = (file: any) => {
+  const handleUpload = (file: RcFile) => {
     console.log(file);
     message.success("Upload success");
     return false;
