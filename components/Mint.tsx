@@ -18,7 +18,6 @@ const Mint: React.FC = () => {
   const [form] = Form.useForm();
   const [mainForm] = Form.useForm();
   const [NFTFile, setNFTFile] = useState<RcFile[]>([]);
-  const [isSuccess, setIsSuccess] = useState(false);
   const [abiOfNFT, setAbiOfNFT] = useState<Abi | null>(null);
   const [contractOfNFT, setContractOfNFT] = useState<StarknetTypedContract<Abi> | null>(null);
   const [completeValues, setCompleteValues] = useState<RWAType>(defaultValues);
@@ -31,7 +30,7 @@ const Mint: React.FC = () => {
     abi: abiOfNFT as Abi,
   });
 
-  const { send, error } = useSendTransaction({ 
+  const { send, error, isPending, isSuccess } = useSendTransaction({ 
     calls: 
       contractOfNFT && address 
         ? [contractOfNFT.populate("mint", [completeValues])] 
@@ -169,6 +168,10 @@ const Mint: React.FC = () => {
     setContractOfNFT(contract);
   }, [abiOfNFT, address, completeValues]);
 
+  useEffect(() => {
+    console.log('isSuccess: ', isSuccess, 'isPending: ', isPending);  
+  }, [isSuccess, isPending]);
+
   return (
     <div>
       <div className="bg-white">
@@ -287,7 +290,7 @@ const Mint: React.FC = () => {
                 <Form.Item>
                   <div className="w-full space-x-5 flex items-center justify-center">
                     <AntButton htmlType="submit" className={`rounded-xl px-8 py-3 text-neutral-100 font-[500] transition tracking-wide w-[200px] h-12 outline-none flex justify-center items-center ${isSuccess ? 'bg-amber-400' : 'bg-blue-600 hover:bg-blue-700'}`}>
-                      Mint
+                      {isPending ? "Mingting" : isSuccess ? "Minted" : "Mint"}
                     </AntButton>
                   </div>
                 </Form.Item>
