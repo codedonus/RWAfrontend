@@ -227,7 +227,7 @@ const Mint: React.FC = () => {
                 <Form.Item<FieldType>
                   name="image"
                   label="Image"
-                  rules={[{ required: false, message: 'Please upload image of RWA NFT' }]}
+                  rules={[{ required: true, message: 'Please upload image of RWA NFT' }]}
                 >
                   <Upload.Dragger
                     beforeUpload={beforeUpload}

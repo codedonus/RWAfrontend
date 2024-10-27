@@ -27,11 +27,6 @@ const HeaderApp = () => {
             Wrapper
           </Link>
         </li>
-        <li>
-          <Link href={"/dex"} className='hover:text-black text-gray-400'>
-            Dex
-          </Link>
-        </li>
       </ul>
       <div className='justify-center items-center min-w-[57%] max-w-2xl w-full hidden md:block'>
         {/* <Search /> */}

@@ -19,9 +19,9 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <StarknetProvider>
-          <div style={{ display: 'flex', justifyContent: 'flex-end', paddingRight: 12, paddingTop: 8, position: 'absolute', zIndex: 1, right: 0 }}>
-                <ConnectButton />
-            </div>
+          <div className="flex justify-end pr-3 pt-2 absolute z-10 right-0">
+            <ConnectButton />
+          </div>
           {children}
         </StarknetProvider>
       </body>
