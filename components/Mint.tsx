@@ -11,6 +11,7 @@ import { Abi, CairoCustomEnum, Contract, RpcProvider } from "starknet";
 import { StarknetTypedContract, useAccount, useContract, useNetwork, useReadContract, useSendTransaction } from "@starknet-react/core";
 import { Chain } from "@starknet-react/chains";
 import { defaultRWAMetadata as defaultValues } from "@/constants";
+import { useAbi } from '@/hooks/useAbi';
 
 const Mint: React.FC = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -18,13 +19,14 @@ const Mint: React.FC = () => {
   const [form] = Form.useForm();
   const [mainForm] = Form.useForm();
   const [NFTFile, setNFTFile] = useState<RcFile[]>([]);
-  const [abiOfNFT, setAbiOfNFT] = useState<Abi | null>(null);
-  const [contractOfNFT, setContractOfNFT] = useState<StarknetTypedContract<Abi> | null>(null);
   const [completeValues, setCompleteValues] = useState<RWAType>(defaultValues);
 
   const { address, account } = useAccount();
   const { chain } = useNetwork();
 
+  const { abi: abiOfNFT, error: abiError } = useAbi(process.env.NEXT_PUBLIC_STARKNET_SEPOLIA_RWA_ADDRESS as `0x${string}`);
+
+  // Use abiOfNFT instead of the state variable
   const { contract } = useContract({
     address: process.env.NEXT_PUBLIC_STARKNET_SEPOLIA_RWA_ADDRESS as `0x${string}`,
     abi: abiOfNFT as Abi,
@@ -32,8 +34,8 @@ const Mint: React.FC = () => {
 
   const { send, error, isPending, isSuccess } = useSendTransaction({ 
     calls: 
-      contractOfNFT && address 
-        ? [contractOfNFT.populate("mint", [completeValues])] 
+      contract && address 
+        ? [contract.populate("mint", [completeValues])] 
         : undefined, 
   }); 
 
@@ -146,36 +148,13 @@ const Mint: React.FC = () => {
   }
 
   useEffect(() => {
-    const getAbi = async () => {
-      try {
-        const provider = new RpcProvider({
-          nodeUrl: process.env.NEXT_PUBLIC_STARKNET_SEPOLIA_RPC as string
-        });
-        const abi = await provider.getClassAt(process.env.NEXT_PUBLIC_STARKNET_SEPOLIA_RWA_ADDRESS as string);
-        if (abi === undefined) throw new Error('Abi is undefined');
-        setAbiOfNFT(abi.abi);
-        console.log('ABI fetched successfully:', abi.abi);
-      } catch (error) {
-        console.error('Error fetching ABI:', error);
-        return null;
-      }
-    };
-
-    const fetchAbiWithRetry = async () => {
-      while (true) {
-        const result = await getAbi();
-        if (result !== null) break;
-        await new Promise(resolve => setTimeout(resolve, 2000)); // Wait for 1 second before retrying
-      }
-    };
-
-    fetchAbiWithRetry();
-  }, []);
+    if (abiError) {
+      console.error('Failed to fetch ABI:', abiError);
+      // Handle the error (e.g., show an error message to the user)
+    }
+  }, [abiError]);
 
   // 监听abiOfNFT、address、completeValues的变化
-  useEffect(() => {
-    setContractOfNFT(contract);
-  }, [abiOfNFT, address, completeValues]);
   useEffect(() => {
     console.log('isSuccess: ', isSuccess, 'isPending: ', isPending, 'tokenId: ', tokenId ? Number(tokenId) - 1 : undefined);
     if (isSuccess) {
@@ -214,7 +193,7 @@ const Mint: React.FC = () => {
 
   return (
     <div>
-      <div className="bg-white">
+      <div>
         <div className="max-w-7xl mx-auto py-20 px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center gap-4 max-w-2xl mx-auto border rounded-lg p-4 bg-white drop-shadow-2xl">
             <h1 className="text-2xl font-semibold text-center pt-8">Mint RWA NFT</h1>
