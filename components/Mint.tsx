@@ -8,7 +8,7 @@ import { message, Upload, Form, Modal, Input, Button as AntButton, Select, Input
 import { UploadOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { Abi, CairoCustomEnum, Contract, RpcProvider } from "starknet";
-import { StarknetTypedContract, useAccount, useContract, useNetwork, useSendTransaction } from "@starknet-react/core";
+import { StarknetTypedContract, useAccount, useContract, useNetwork, useReadContract, useSendTransaction } from "@starknet-react/core";
 import { Chain } from "@starknet-react/chains";
 import { defaultRWAMetadata as defaultValues } from "@/constants";
 
@@ -36,6 +36,14 @@ const Mint: React.FC = () => {
         ? [contractOfNFT.populate("mint", [completeValues])] 
         : undefined, 
   }); 
+
+  const { data: tokenId, error: readError } = useReadContract({
+    address: process.env.NEXT_PUBLIC_STARKNET_SEPOLIA_RWA_ADDRESS as `0x${string}`,
+    abi: abiOfNFT as Abi,
+    functionName: "totalSupply",
+    args: [],
+    watch: true,
+  })
 
   // 深度合并函数
   const deepMerge = <T extends Record<string, any>>(defaultObj: T, userObj: Partial<T>): T => {
@@ -157,20 +165,52 @@ const Mint: React.FC = () => {
       while (true) {
         const result = await getAbi();
         if (result !== null) break;
-        await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for 1 second before retrying
+        await new Promise(resolve => setTimeout(resolve, 2000)); // Wait for 1 second before retrying
       }
     };
 
     fetchAbiWithRetry();
   }, []);
 
+  // 监听abiOfNFT、address、completeValues的变化
   useEffect(() => {
     setContractOfNFT(contract);
   }, [abiOfNFT, address, completeValues]);
-
   useEffect(() => {
-    console.log('isSuccess: ', isSuccess, 'isPending: ', isPending);  
-  }, [isSuccess, isPending]);
+    console.log('isSuccess: ', isSuccess, 'isPending: ', isPending, 'tokenId: ', tokenId ? Number(tokenId) - 1 : undefined);
+    if (isSuccess) {
+      message.success('Minted successfully');
+    }
+  }, [isSuccess, isPending, tokenId]);
+
+
+  // Mint成功之后，tokenId会更新，所以需要监听tokenId的变化
+  useEffect(() => {
+    if (isSuccess) {
+      // Submit to backend
+      fetch('/api/add_nft', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_address: address,
+          token_id: Number(tokenId) - 1,
+        }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.ok) {
+          console.log('Token ID added successfully:', data.data);
+        } else {
+          console.error('Error adding token ID:', data.error);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    }
+  }, [tokenId, isSuccess])
 
   return (
     <div>
