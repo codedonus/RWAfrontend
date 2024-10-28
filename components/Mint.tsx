@@ -170,10 +170,12 @@ const Mint: React.FC = () => {
   }, [isSuccess, isPending, tokenId]);
 
 
-  // Mint成功之后，tokenId会更新，所以需要监听tokenId的变化
+  // Mint成功之后，监听tokenId和isSuccess的变化，确保获取最新的tokenId
   useEffect(() => {
-    if (isSuccess) {
-      // Submit to backend
+    if (isSuccess && tokenId) {
+      const currentTokenId = Number(tokenId) - 1;
+      
+      // Submit to backend with current tokenId
       fetch('/api/add_nft', {
         method: 'POST',
         headers: {
@@ -181,13 +183,14 @@ const Mint: React.FC = () => {
         },
         body: JSON.stringify({
           user_address: address,
-          token_id: Number(tokenId) - 1,
+          token_id: currentTokenId,
         }),
       })
       .then(response => response.json())
       .then(data => {
         if (data.ok) {
           console.log('Token ID added successfully:', data.data);
+          console.log('Current token ID:', currentTokenId); // Log current token ID
         } else {
           console.error('Error adding token ID:', data.error);
         }
@@ -196,7 +199,7 @@ const Mint: React.FC = () => {
         console.error('Error:', error);
       });
     }
-  }, [tokenId, isSuccess])
+  }, [tokenId, isSuccess, address])
 
   return (
     <div>
@@ -282,6 +285,7 @@ const Mint: React.FC = () => {
                 <Form.Item<FieldType>
                   name="issuer"
                   label="Issuer"
+                  rules={[{ required: true, message: 'Please add issuer of RWA NFT' }]}
                 >
                   <AntButton onClick={() => showModal("issuer")}>
                     Click to add
@@ -307,6 +311,7 @@ const Mint: React.FC = () => {
                 <Form.Item<FieldType>
                   name="asset_details"
                   label="Asset Details"
+                  rules={[{ required: true, message: 'Please add details of RWA NFT' }]}
                 >
                   <AntButton onClick={() => showModal("asset_details")}>
                     Click to add
@@ -331,10 +336,10 @@ const Mint: React.FC = () => {
         <Form form={form} layout="vertical" initialValues={{ remember: true }} preserve={false}>
           {currentField === "issuer" && (
             <>
-              <Form.Item name={['name']} label="Name" rules={[{ required: false }]}>
+              <Form.Item name={['name']} label="Name" rules={[{ required: true, message: 'Please add name of issuer' }]}>
                 <Input />
               </Form.Item>
-              <Form.Item name={['contact']} label="Contact" rules={[{ required: false }]}>
+              <Form.Item name={['contact']} label="Contact" rules={[{ required: true, message: 'Please add contact of issuer' }]}>
                 <Input />
               </Form.Item>
               <Form.Item name={['certification']} label="Certification" rules={[{ required: false }]}>
@@ -347,16 +352,16 @@ const Mint: React.FC = () => {
               <Form.Item name={['location']} label="Location" rules={[{ required: false }]}>
                 <Input />
               </Form.Item>
-              <Form.Item name={['legal_status']} label="Legal Status" rules={[{ required: false }]}>
+              <Form.Item name={['legal_status']} label="Legal Status" rules={[{ required: true, message: 'Please add legal status of RWA NFT' }]}>
                 <Input />
               </Form.Item>
               <Form.Item 
                 label="Valuation"
-                required={false}
+                rules={[{ required: true, message: 'Please add valuation of RWA NFT' }]}
                 className="flex flex-row gap-4"
                 layout="horizontal"
               >
-                <Form.Item name={['valuation', 'currency']} label="Currency" rules={[{ required: false }]} layout="horizontal">
+                <Form.Item name={['valuation', 'currency']} label="Currency" rules={[{ required: true, message: 'Please select currency of valuation' }]} layout="horizontal">
                   <Select>
                     <Select.Option value="CNY">CNY</Select.Option>
                     <Select.Option value="USD">USD</Select.Option>
@@ -367,7 +372,7 @@ const Mint: React.FC = () => {
                     <Select.Option value="CAD">CAD</Select.Option>
                   </Select>
                 </Form.Item>
-                <Form.Item name={['valuation', 'amount']} label="Amount" rules={[{ required: false }]} layout="horizontal">
+                <Form.Item name={['valuation', 'amount']} label="Amount" rules={[{ required: true, message: 'Please add amount of valuation' }]} layout="horizontal">
                   <InputNumber min={0} />
                 </Form.Item>
               </Form.Item>
