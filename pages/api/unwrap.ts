@@ -9,7 +9,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     case "POST":
       // console.log(`req.body`, req.body);
       try {
-        const { user_address, nft_contract_address } = req.body; // 解析查询参数
+        const { user_address, nft_contract_address } = JSON.parse(req.body); // 解析查询参数
 
         if (!user_address || !nft_contract_address) {
           res.status(400).json({ ok: false, error: 'Missing user_address or nft_contract_address' });

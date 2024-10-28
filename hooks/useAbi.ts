@@ -6,6 +6,8 @@ export const useAbi = (contractAddress: `0x${string}`) => {
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
+    if (contractAddress === '0x') return;
+
     const getAbi = async () => {
       try {
         const provider = new RpcProvider({
