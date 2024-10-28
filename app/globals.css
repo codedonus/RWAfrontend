@@ -3,17 +3,55 @@
 @tailwind utilities;
 
 :root {
-  --background-gradient: linear-gradient(to right, rgba(236, 72, 153, 0.5), rgba(234, 179, 8, 0.5));
+  --background-gradient: linear-gradient(45deg, 
+    rgba(236, 72, 153, 0.5) 0%,
+    rgba(244, 114, 182, 0.5) 25%,
+    rgba(251, 191, 36, 0.5) 50%,
+    rgba(250, 204, 21, 0.5) 75%,
+    rgba(236, 72, 153, 0.5) 100%
+  );
 }
 
 body {
   background-image: var(--background-gradient);
+  background-size: 300% 300%;
   background-attachment: fixed;
   min-height: 100vh;
+  animation: gradient-flow 12s ease infinite;
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+@keyframes gradient-flow {
+  0% {
+    background-position: 0% 0%;
+  }
+  25% {
+    background-position: 100% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  75% {
+    background-position: 0% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+.bg-gradient-animation {
+  background: linear-gradient(45deg,
+    #ec4899 0%,
+    #f472b6 25%,
+    #fbbf24 50%,
+    #eab308 75%,
+    #ec4899 100%
+  );
+  background-size: 300% 300%;
+  animation: gradient-flow 12s ease infinite;
 }

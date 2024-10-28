@@ -23,7 +23,7 @@ const Landing = ({ scrollTo }: { scrollTo: (id: string) => void }) => {
     }, [])
 
     return (
-        <div id="home" ref={el} className="w-full h-[115vh] relative bg-gradient-to-r from-pink-500 to-yellow-500 min-h-screen">
+        <div id="home" ref={el} className="w-full h-[115vh] relative bg-gradient-animation min-h-screen">
             <div className="landing-title flex flex-col items-center absolute top-[25%] w-full text-neutral-950" data-speed="0.6">
                 <h1 className="landing-name text-[clamp(60px,7vw,135px)] font-[600]">RWAWrapper</h1>
                 <h2 className="landing-sub pb-10 text-[clamp(20px,2vw,32px)]">RWA NFT 碎片化协议</h2>
