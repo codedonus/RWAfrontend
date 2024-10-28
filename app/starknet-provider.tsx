@@ -9,7 +9,10 @@ import { mainnet, sepolia } from "@starknet-react/chains";
 import { StarknetConfig, publicProvider } from "@starknet-react/core";
  
 export default function StarknetProvider({ children }: { children: React.ReactNode }) {
-  const chains = [mainnet, sepolia]
+  const chains = [
+    // mainnet,
+    sepolia
+  ]
   const projectId = process.env.NEXT_PUBLIC_WC_PROJECT_ID;
   const host = typeof window !== "undefined" ? window.location.hostname : "";
  
