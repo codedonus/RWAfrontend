@@ -6,7 +6,7 @@ const HeaderApp = () => {
 
   return (
     <nav className='flex items-center justify-start space-x-8 bg-slate-50 container drop-shadow-xl min-h-16 min-w-full'>
-      <Link href={"/"} className="items-center font-medium text-white text-lg hidden md:block">
+      <Link href={"/"} className="items-center font-medium text-white text-lg hidden md:flex flex-row gap-2">
         <Image
           src={`/images/logo_light.png`}
           width={64}
@@ -15,6 +15,7 @@ const HeaderApp = () => {
           priority
           className="relative w-16 h-16 mr-auto md:mr-0 flex-shrink-0 !important"
         />
+        <div className='text-xl font-bold text-black'>RWAWrapper</div>
       </Link>
       <ul className='flex items-start md:items-center space-x-5'>
         <li>

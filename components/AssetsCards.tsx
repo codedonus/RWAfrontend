@@ -1,11 +1,12 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import { Card, Spin } from "antd";
+import { Card } from "antd";
 import { useAccount } from "@starknet-react/core";
 import { useNFTMetadata } from '@/hooks/useNFTMetadata';
 import Image from "next/image";
 import Link from "next/link";
+import { Loading } from "./Loading";
 
 const AssetsCards: React.FC = () => {
   const [nftIds, setNftIds] = useState<number[]>([]);
@@ -34,7 +35,7 @@ const AssetsCards: React.FC = () => {
     <div className="min-h-[500px]">
       {isLoading ? (
         <div className="flex text-center p-5 items-center">
-          <Spin size="large" />
+          <Loading />
         </div>
       ) : (
         <div className="flex flex-wrap gap-4">

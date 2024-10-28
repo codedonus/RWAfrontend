@@ -1,11 +1,12 @@
 'use client';
 
 import { useEffect, useState, useCallback, useRef } from "react";
-import { Modal, Card, Spin, message, Tag } from "antd";
+import { Modal, Card, message, Tag } from "antd";
 import Button from "./Button";
 import { useAccount } from "@starknet-react/core";
 import { useNFTMetadata } from '@/hooks/useNFTMetadata';
 import Image from "next/image";
+import { Loading } from "./Loading";
 
 const NFTModal: React.FC<{ onSelectNFTs: (tokenIds: number[]) => void, wrappedNFTs: number[] }> = ({ onSelectNFTs, wrappedNFTs }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -89,9 +90,10 @@ const NFTModal: React.FC<{ onSelectNFTs: (tokenIds: number[]) => void, wrappedNF
         title="Choose your NFT"
         className="max-h-[600px] overflow-y-auto"
       >
-        {isLoading ? (
-          <div style={{ textAlign: 'center', padding: '20px' }}>
-            <Spin size="large" />
+        {address ? (
+          isLoading ? (
+            <div style={{ textAlign: 'center', padding: '20px' }}>
+            <Loading />
           </div>
         ) : (
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
@@ -120,7 +122,10 @@ const NFTModal: React.FC<{ onSelectNFTs: (tokenIds: number[]) => void, wrappedNF
                 />
               </Card>
             ))}
-          </div>
+            </div>
+          )
+        ) : (
+          <div className="text-center">Please connect your wallet</div>
         )}
       </Modal>
     </div>

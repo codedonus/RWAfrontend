@@ -2,11 +2,15 @@ import { useEffect, useState } from 'react';
 import { useContract, useProvider } from '@starknet-react/core';
 import { Abi, Contract } from 'starknet';
 import { useAbi } from './useAbi';
+import { RWAType } from '@/types';
 
 export function useNFTMetadata(tokenIds: number[]) {
-  const [nftMetadataList, setNftMetadataList] = useState<Array<{ token_id: number, metadata: any }>>([]);
+  const [nftMetadataList, setNftMetadataList] = useState<Array<{ token_id: number, metadata: RWAType }>>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
+
+  // 使用 JSON.stringify 来比较数组内容而不是引用
+  const tokenIdsKey = JSON.stringify(tokenIds);
 
   const provider = useProvider();
   const { abi } = useAbi(process.env.NEXT_PUBLIC_STARKNET_SEPOLIA_RWA_ADDRESS as `0x${string}`);
@@ -41,7 +45,7 @@ export function useNFTMetadata(tokenIds: number[]) {
     };
 
     fetchNftMetadata();
-  }, [contract, tokenIds]);
+  }, [contract, tokenIdsKey]); // 使用 tokenIdsKey 替代 tokenIds
 
   return { nftMetadataList, isLoading, error };
 }
