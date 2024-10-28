@@ -48,14 +48,21 @@ const Mint: React.FC = () => {
   })
 
   // 深度合并函数
-  const deepMerge = <T extends Record<string, any>>(defaultObj: T, userObj: Partial<T>): T => {
+  const deepMerge = <T extends Record<string, unknown>>(defaultObj: T, userObj: Partial<T>): T => {
     return Object.keys(defaultObj).reduce((acc: T, key: keyof T) => {
-      if (key === 'asset_type' && defaultObj[key] && typeof defaultObj[key] === 'object' && 'variant' in defaultObj[key]) {
-        acc[key] = (userObj[key] as T[keyof T]) || defaultObj[key];
-      } else if (typeof defaultObj[key] === "object" && !Array.isArray(defaultObj[key])) {
-        acc[key] = deepMerge(defaultObj[key] as T[keyof T], (userObj[key] || {}) as Partial<T[keyof T]>);
+      const defaultValue = defaultObj[key];
+      const userValue = userObj[key];
+
+      if (key === 'asset_type' && defaultValue && typeof defaultValue === 'object' && 'variant' in defaultValue) {
+        acc[key] = (userValue ?? defaultValue) as T[keyof T];
+      } else if (defaultValue && typeof defaultValue === 'object' && !Array.isArray(defaultValue)) {
+        const mergedValue = deepMerge(
+          defaultValue as Record<string, unknown>,
+          (userValue || {}) as Record<string, unknown>
+        );
+        acc[key] = mergedValue as T[keyof T];
       } else {
-        acc[key] = userObj[key] !== undefined ? userObj[key] as T[keyof T] : defaultObj[key];
+        acc[key] = (userValue !== undefined ? userValue : defaultValue) as T[keyof T];
       }
       return acc;
     }, {} as T);

@@ -29,7 +29,7 @@ const Asset: React.FC<AssetProps> = ({ tokenId }) => {
   const showModal = () => setIsModalOpen(true);
   const handleCancel = () => setIsModalOpen(false);
 
-  const renderMetadataSection = (data: any, level: number = 0): JSX.Element[] => {
+  const renderMetadataSection = (data: Record<string, unknown>, level: number = 0): JSX.Element[] => {
     return Object.entries(data).flatMap(([key, value]) => {
       const formattedKey = key.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
       
@@ -60,11 +60,11 @@ const Asset: React.FC<AssetProps> = ({ tokenId }) => {
         );
       }
 
-      if (typeof value === 'object' && !Array.isArray(value)) {
+      if (typeof value === 'object' && !Array.isArray(value) && value !== null) {
         return (
           <div key={key} style={{ marginLeft: `${level * 20}px` }}>
             <div className={`${titleClassName} mt-4`}>{formattedKey}:</div>
-            {renderMetadataSection(value, level + 1)}
+            {renderMetadataSection(value as Record<string, unknown>, level + 1)}
           </div>
         );
       }
@@ -84,7 +84,7 @@ const Asset: React.FC<AssetProps> = ({ tokenId }) => {
     <div className="lg:mx-[204px] md:mx-8 my-0 gap-[20px] max-w-[1280px] px-10 pt-[40px] pb-[60px] gap-y-5 flex-col flex">
       <div className="grid grid-rows-1 lg:grid-cols-[320px,1fr] container gap-10 relative antialiased justify-center">
         <div className="aspect-square bg-white bg-clip-border bg-opacity-100 bg-origin-padding bg-no-repeat bg-auto rounded-xl box-border text-black block overflow-hidden relative antialiased h-[320px]">
-          <Image src={`https://tomato-tired-rattlesnake-260.mypinata.cloud/ipfs/${NFTMetadata?.image}`} width={320} height={320}/>
+          <Image alt="NFT Image" src={`https://tomato-tired-rattlesnake-260.mypinata.cloud/ipfs/${NFTMetadata?.image}`} width={320} height={320}/>
         </div>
         <div className="box-border text-black gap-5 gap-y-5 display-flex flex-col h-[180px] m-0 w-full antialiased">
           <div className="flex flex-col justify-center lg:justify-start items-center lg:items-start gap-1">
