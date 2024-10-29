@@ -31,8 +31,8 @@ const About = () => {
 
   return (
     <div ref={el} id="about" className="pb-40 w-full relative px-[10vw] 2xl:px-[12.5vw] bg-slate-100">
-      <SectionTitle title="关于本项目"/>
-      <p className="about-text text-neutral-900 text-[clamp(1.4rem,2vw,1.75rem)] text-center font-silka leading-[1.8] will-change-transform">本项目旨在构建一个基于以太坊 Layer2 的跨链 NFT 交易市场，充分利用 LayerZero 跨链协议的独特优势，实现不同区块链、不同协议 NFT 资产的安全、高效流通。通过 LayerZero 的跨链技术，我们能够将多个区块链的 NFT 资源汇聚于一个统一的交易平台，为用户提供丰富多样的数字资产交易体验。</p>
+      <SectionTitle title="About"/>
+      <p className="about-text text-neutral-900 text-[clamp(1.4rem,2vw,1.75rem)] text-center font-silka leading-[1.8] will-change-transform">RWAWrapper is an innovative NFT fractionalization protocol designed specifically for real-world assets (RWA). Our platform enables asset owners to tokenize and fractionalize physical assets like real estate, art, and commodities into NFTs, making them more accessible and liquid. </p>
       <TechnologyStack />
     </div>
   )

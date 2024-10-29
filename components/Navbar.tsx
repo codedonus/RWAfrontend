@@ -47,23 +47,23 @@ const NavBar = ({ scrollTo, scrollPaused }: {scrollTo: (id: string) => void, scr
             <div className="text-[clamp(2.5rem,10vw,3.75rem)] absolute top-[45%] -translate-y-1/2 pl-8 lg:pl-10 w-full">
               <div className="group flex items-center py-[calc(2vh+5px)] cursor-pointer w-full" onClick={() => goTo('#about')}>
                 <div className="w-2 h-2 rounded-full scale-0 group-hover:scale-100 bg-neutral-100 transition"></div>
-                <p className={`group-hover:translate-x-[20px] transition ${open ? '' : 'translate-x-[40px] duration-300'}`}>关于本项目</p>
+                <p className={`group-hover:translate-x-[20px] transition ${open ? '' : 'translate-x-[40px] duration-300'}`}>About</p>
               </div>
               <div className="group flex items-center py-[calc(2vh+5px)] cursor-pointer w-full" onClick={() => goTo('#projects')}>
                 <div className="w-2 h-2 rounded-full scale-0 group-hover:scale-100 bg-neutral-100 transition"></div>
-                <p className={`group-hover:translate-x-[20px] transition ${open ? '' : 'translate-x-[20px] duration-300'}`}>项目特色</p>
+                <p className={`group-hover:translate-x-[20px] transition ${open ? '' : 'translate-x-[20px] duration-300'}`}>Features</p>
               </div>
             </div>   
             <div className="absolute bottom-20 lg:bottom-12 px-[5vw] lg:px-8 flex">
-              <a href="https://github.com/Layer2Square" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+              <a href="https://github.com/RWAWrapper" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
                 <div className={`group p-6 w-fit cursor-pointer transition ${open ? '' : 'translate-x-[20px] duration-300'}`}>
                   <p className="transition group-hover:-translate-y-1 group-hover:text-white">GitHub</p>
                   <div className="h-[2px] bg-white scale-x-0 group-hover:scale-x-100 transition duration-200 origin-center"></div>
                 </div>
               </a>
-              <a href="https://layer2square.vercel.app/" target="_blank" rel="noopener noreferrer" aria-label="Doc">
+              <a href="www.linkedin.com/in/涛行-孔-46251a202" target="_blank" rel="noopener noreferrer" aria-label="Doc">
                   <div className={`group p-6 w-fit cursor-pointer transition ${open ? '' : 'translate-x-[40px] duration-300'}`}>
-                      <p className="transition group-hover:-translate-y-1 group-hover:text-white">开发文档</p>
+                      <p className="transition group-hover:-translate-y-1 group-hover:text-white">LinkedIn</p>
                       <div className="h-[2px] bg-white scale-x-0 group-hover:scale-x-100 transition duration-200 origin-center"></div>
                   </div>
               </a>
