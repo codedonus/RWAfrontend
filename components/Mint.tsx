@@ -260,7 +260,7 @@ const Mint: React.FC = () => {
                     <div>
                       <UploadOutlined />
                       <div className='mt-2'>
-                          上传
+                          Upload
                       </div>
                     </div>
                   </Upload.Dragger>
