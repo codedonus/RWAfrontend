@@ -25,7 +25,7 @@ const ConnectButton = () => {
   }
 
   const listContent = [
-    <a className="cursor-pointer hover:text-blue-600 w-[176px] text-center" href="/profile" target="_blank" key="profile">
+    <a className="cursor-pointer hover:text-blue-600 w-[176px] text-center" href="/profile" key="profile">
       Profile
     </a>,
     <div className="cursor-pointer hover:text-blue-600 w-[176px] text-center" onClick={() => disconnectWallet()} key="disconnect">
