@@ -23,7 +23,7 @@ const FooterApp = () => {
               <div className="text-xl font-semibold">Relative Links</div>
               <div className="flex gap-4">
                 <a
-                  href="https://github.com/RWAWrapper"
+                  href="https://github.com/"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -38,7 +38,7 @@ const FooterApp = () => {
             <div className="flex gap-4 text-xs">
               
               <a
-                href="https://github.com/RWAWrapper/website"
+                href="https://github.com/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-white"
